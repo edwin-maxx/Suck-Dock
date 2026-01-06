@@ -1,0 +1,74 @@
+{
+  "name": "suck-dock",
+  "type": "WEB",
+
+  "regions": ["fra"],
+
+  "instance_types": [
+    {
+      "scopes": ["region:fra"],
+      "type": "free"
+    }
+  ],
+
+  "scalings": [
+    {
+      "scopes": ["region:fra"],
+      "min": 0,
+      "max": 1,
+      "targets": [
+        {
+          "sleep_idle_delay": {
+            "value": 0,
+            "deep_sleep_value": 3900,
+            "light_sleep_value": 0
+          }
+        }
+      ]
+    }
+  ],
+
+  "ports": [
+    { "port": 3000, "protocol": "http" },
+    { "port": 2222, "protocol": "tcp" }
+  ],
+
+  "routes": [
+    {
+      "port": 3000,
+      "path": "/"
+    }
+  ],
+
+  "health_checks": [
+    {
+      "grace_period": 5,
+      "interval": 30,
+      "timeout": 5,
+      "restart_limit": 3,
+      "http": {
+        "port": 3000,
+        "path": "/",
+        "method": "GET"
+      }
+    },
+    {
+      "grace_period": 5,
+      "interval": 30,
+      "timeout": 5,
+      "restart_limit": 3,
+      "tcp": {
+        "port": 2222
+      }
+    }
+  ],
+
+  "git": {
+    "repository": "github.com/edwin-maxx/Suck-Dock",
+    "branch": "main"
+  },
+
+  "docker": {
+    "dockerfile": "Dockerfile"
+  }
+}
